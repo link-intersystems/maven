@@ -10,7 +10,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>DB Tools</name>
 	<description>The dbtools maven plugin provides utility goals useful for development and continuous integration environments.</description>
-
+	<packaging>maven-plugin</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.dbunit</groupId>
