@@ -29,14 +29,6 @@
 			<artifactId>maven-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.sonatype.aether</groupId>
-			<artifactId>aether-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.sonatype.aether</groupId>
-			<artifactId>aether-util</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
