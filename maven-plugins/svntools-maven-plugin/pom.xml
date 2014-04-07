@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.link_intersystems.maven.plugins</groupId>
+		<artifactId>maven-plugins</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>svntools-maven-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.tmatesoft.svnkit</groupId>
+			<artifactId>svnkit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.link_intersystems.maven.plugins</groupId>
+			<artifactId>maven-plugin-commons</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.tmatesoft.svnkit</groupId>
+				<artifactId>svnkit</artifactId>
+				<version>1.8.3-1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<!-- see http://jira.codehaus.org/browse/MNG-5346 -->
+					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+				</configuration>
+				<executions>
+					<execution>
+						<id>mojo-descriptor</id>
+						<goals>
+							<goal>descriptor</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-component-metadata</artifactId>
+				<version>1.5.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-metadata</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>
+						com.link_intersystems.maven.plugins
+					</groupId>
+					<artifactId>svntools-maven-plugin</artifactId>
+					<version>0.0.1-SNAPSHOT</version>
+					<configuration>
+						<sourceRepository>
+							<url>svn://d032a4401.emea.bg.corpintra.net/xFleet/Devel</url>
+							<authenticationId>xfleetsvn</authenticationId>
+						</sourceRepository>
+						<targetRepository>
+							<url>file:///V:/Dev/repos/svn/xfleet_dump/xfleet_repo</url>
+						</targetRepository>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

@@ -8,6 +8,7 @@
 	<modules>
 		<module>dbtools-maven-plugin</module>
 		<module>maven-plugin-commons</module>
+		<module>svntools-maven-plugin</module>
 	</modules>
 
 	<dependencyManagement>
