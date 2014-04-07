@@ -140,7 +140,12 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 		}
 
 		public Log getLog() {
-			return AbstractMavenContextMojo.this.getLog();
+			return new ContextLogImpl(AbstractMavenContextMojo.this.getLog());
+		}
+
+		public ContextLog getContextLog(String context) {
+			return new ContextLogImpl(AbstractMavenContextMojo.this.getLog(),
+					context);
 		}
 
 		/**

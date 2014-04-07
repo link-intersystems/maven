@@ -82,11 +82,10 @@
 					<version>0.0.1-SNAPSHOT</version>
 					<configuration>
 						<sourceRepository>
-							<url>svn://d032a4401.emea.bg.corpintra.net/xFleet/Devel</url>
-							<authenticationId>xfleetsvn</authenticationId>
+							<url>https://svn.apache.org/repos/asf</url>
 						</sourceRepository>
 						<targetRepository>
-							<url>file:///V:/Dev/repos/svn/xfleet_dump/xfleet_repo</url>
+							<url>file:///V:/Dev/repos/svn/maven-release-plugin</url>
 						</targetRepository>
 					</configuration>
 				</plugin>

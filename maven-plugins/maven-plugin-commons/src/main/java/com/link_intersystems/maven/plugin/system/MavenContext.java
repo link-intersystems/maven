@@ -34,5 +34,7 @@ public interface MavenContext {
 
 	Server getServerSettings(String serverId);
 
+	ContextLog getContextLog(String context);
+
 
 }

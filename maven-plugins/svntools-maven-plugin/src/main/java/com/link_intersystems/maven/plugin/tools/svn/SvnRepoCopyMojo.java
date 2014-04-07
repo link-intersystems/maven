@@ -5,14 +5,19 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import com.link_intersystems.maven.plugin.system.AbstractMavenContextMojo;
+import com.link_intersystems.maven.plugin.system.PropertyEditor;
 
-@Mojo(name = "repo-copy", requiresDependencyCollection = ResolutionScope.COMPILE, requiresDependencyResolution = ResolutionScope.RUNTIME)
+@Mojo(name = "repo-copy", requiresDependencyCollection = ResolutionScope.COMPILE, requiresDependencyResolution = ResolutionScope.RUNTIME, configurator = "editorSupport")
 public class SvnRepoCopyMojo extends
-		AbstractMavenContextMojo<SvnCopyExecutor, SvnCopyParams> implements
-		SvnCopyParams {
+		AbstractMavenContextMojo<SvnRepositoryCopyExecutor, SvnRepositoryCopyParams> implements
+		SvnRepositoryCopyParams {
+
 	@Parameter
+	@PropertyEditor(propertyEditorClass = SvnRepositoryPropertyEditorComponent.class)
 	private SvnRepository sourceRepository;
+
 	@Parameter
+	@PropertyEditor(propertyEditorClass = SvnRepositoryPropertyEditorComponent.class)
 	private SvnRepository targetRepository;
 
 	public RichSvnRepository getSourceRepository() {
