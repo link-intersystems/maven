@@ -20,6 +20,7 @@ import org.dbunit.dataset.IDataSet;
 import com.link_intersystems.maven.plugin.dbtools.DataSet;
 import com.link_intersystems.maven.plugin.dbtools.DataSet.Format;
 import com.link_intersystems.maven.plugin.dbtools.RichDriverConfig;
+import com.link_intersystems.maven.plugin.system.GoalExecutionException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
 public class RichExportDataSet {
@@ -91,7 +92,7 @@ public class RichExportDataSet {
 		return filename;
 	}
 
-	public IDataSet createDataSet() throws MojoExecutionException {
+	public IDataSet createDataSet() throws GoalExecutionException {
 		IDatabaseConnection connection = richDriverConfig.createConnection();
 		try {
 			String[] dependentTables = exportDataSet.getDependentTables();
@@ -122,7 +123,7 @@ public class RichExportDataSet {
 				connection.close();
 			} catch (SQLException e1) {
 			}
-			throw new MojoExecutionException("Unable to create data set", e);
+			throw new GoalExecutionException("Unable to create data set", e);
 		}
 	}
 

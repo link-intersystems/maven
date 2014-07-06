@@ -1,7 +1,6 @@
 package com.link_intersystems.maven.plugin.tools.svn;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.settings.Server;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
@@ -13,6 +12,7 @@ import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 import org.tmatesoft.svn.core.wc.admin.SVNAdminClient;
 
+import com.link_intersystems.maven.plugin.system.GoalParameterException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
 public class RichSvnRepository {
@@ -76,18 +76,18 @@ public class RichSvnRepository {
 		}
 	}
 
-	public void checkAvailability() throws MojoExecutionException {
+	public void checkAvailability() {
 		try {
 			SVNRepository svnRepository = getSVNRepository();
 			svnRepository.testConnection();
 		} catch (SVNException e) {
 			String url = svnRepository.getUrl();
 			if (StringUtils.isBlank(url)) {
-				throw new MojoExecutionException(
+				throw new GoalParameterException(
 						"Repository definitions must have a valid url: " + url,
 						e);
 			}
-			throw new MojoExecutionException(
+			throw new GoalParameterException(
 					"Repository "
 							+ toString()
 							+ " can not be accessed. Does it exist? In case "

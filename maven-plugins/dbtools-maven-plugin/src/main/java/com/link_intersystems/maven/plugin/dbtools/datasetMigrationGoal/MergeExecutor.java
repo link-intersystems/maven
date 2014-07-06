@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
@@ -18,14 +16,15 @@ import org.dbunit.operation.DatabaseOperation;
 import com.link_intersystems.maven.plugin.dbtools.DependencyAwareDataset;
 import com.link_intersystems.maven.plugin.dbtools.exportGoal.DataSetWriter;
 import com.link_intersystems.maven.plugin.dbtools.exportGoal.FileWriteTarget;
-import com.link_intersystems.maven.plugin.system.GoalExecutor;
+import com.link_intersystems.maven.plugin.system.Goal;
+import com.link_intersystems.maven.plugin.system.GoalExecutionException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
-public class MergeExecutor implements GoalExecutor<MergeParams> {
+public class MergeExecutor implements Goal<MergeParams> {
 
 	@Override
 	public void execute(MavenContext mavenContext, MergeParams executionParams)
-			throws MojoExecutionException, MojoFailureException {
+			throws GoalExecutionException {
 		Log log = mavenContext.getLog();
 
 		RichMergeDataSet richMergeDataset = executionParams
@@ -46,11 +45,11 @@ public class MergeExecutor implements GoalExecutor<MergeParams> {
 
 		if (files.length == 0) {
 			try {
-				throw new MojoExecutionException(
+				throw new GoalExecutionException(
 						"No files found in directory: "
 								+ destinationDirectory.getCanonicalPath());
 			} catch (IOException e) {
-				throw new MojoExecutionException(
+				throw new GoalExecutionException(
 						"Unable to access path of directory", e);
 			}
 		}
@@ -90,11 +89,11 @@ public class MergeExecutor implements GoalExecutor<MergeParams> {
 
 				log.info("done");
 			} catch (DataSetException e) {
-				throw new MojoExecutionException(e.getMessage());
+				throw new GoalExecutionException(e.getMessage());
 			} catch (IOException e) {
-				throw new MojoExecutionException(e.getMessage());
+				throw new GoalExecutionException(e.getMessage());
 			} catch (Exception e) {
-				throw new MojoExecutionException(e.getMessage());
+				throw new GoalExecutionException(e.getMessage());
 			}
 		}
 	}

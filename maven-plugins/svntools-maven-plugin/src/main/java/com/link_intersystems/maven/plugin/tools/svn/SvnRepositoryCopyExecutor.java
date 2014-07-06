@@ -1,7 +1,5 @@
 package com.link_intersystems.maven.plugin.tools.svn;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNException;
@@ -11,15 +9,14 @@ import org.tmatesoft.svn.core.replicator.ISVNReplicationHandler;
 import org.tmatesoft.svn.core.replicator.SVNRepositoryReplicator;
 
 import com.link_intersystems.maven.plugin.system.ContextLog;
-import com.link_intersystems.maven.plugin.system.GoalExecutor;
+import com.link_intersystems.maven.plugin.system.Goal;
+import com.link_intersystems.maven.plugin.system.GoalExecutionException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
-public class SvnRepositoryCopyExecutor implements
-		GoalExecutor<SvnRepositoryCopyParams> {
+public class SvnRepositoryCopyExecutor implements Goal<SvnRepositoryCopyParams> {
 
 	public void execute(MavenContext mavenContext,
-			SvnRepositoryCopyParams executionParams)
-			throws MojoExecutionException, MojoFailureException {
+			SvnRepositoryCopyParams executionParams) {
 		RichSvnRepository sourceRepository = executionParams
 				.getSourceRepository();
 		RichSvnRepository targetRepository = executionParams
@@ -34,8 +31,6 @@ public class SvnRepositoryCopyExecutor implements
 			targetRepository.checkAvailability();
 			sourceRepository.checkAvailability();
 
-
-
 			SVNRepositoryReplicator replicator = SVNRepositoryReplicator
 					.newInstance();
 			ISVNReplicationHandler isvnReplicationHandler = new SvnReplicationMavenLogger(
@@ -44,7 +39,7 @@ public class SvnRepositoryCopyExecutor implements
 			replicator.replicateRepository(sourceSvnRepository,
 					targetSvnRepository, true);
 		} catch (SVNException e) {
-			throw new MojoExecutionException("Unable to replicate repository",
+			throw new GoalExecutionException("Unable to replicate repository",
 					e);
 		}
 	}

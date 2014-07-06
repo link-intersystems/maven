@@ -21,7 +21,7 @@ import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 
-public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, PARAMS>
+public abstract class AbstractMavenContextMojo<T extends Goal<PARAMS>, PARAMS>
 		extends AbstractMojo {
 
 	/**
@@ -32,7 +32,7 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 
 	/**
 	 * The current repository/network configuration of Maven.
-	 *
+	 * 
 	 */
 	@Parameter(defaultValue = "${repositorySystemSession}")
 	private RepositorySystemSession repoSession;
@@ -40,7 +40,7 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 	/**
 	 * The project's remote repositories to use for the resolution of plugins
 	 * and their dependencies.
-	 *
+	 * 
 	 */
 	@Parameter(defaultValue = "${project.remotePluginRepositories}")
 	private List<RemoteRepository> remoteRepos;
@@ -55,7 +55,7 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 	private MavenSession mavenSession;
 
 	/**
-	 *
+	 * 
 	 * @parameter default-value="${project.build.directory}"
 	 */
 	private String targetFolder;
@@ -70,17 +70,37 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 			MojoFailureException {
 		PARAMS executionParams = getExecutionParams();
 		try {
-			T goalExecutor = createGoalExecutor();
-			goalExecutor.execute(mavenContext, executionParams);
+			T goal = getGoal();
+			goal.execute(mavenContext, executionParams);
 		} catch (InstantiationException e) {
 			throw new MojoExecutionException(
 					"Unable to instantiate the goal executor.", e);
 		} catch (IllegalAccessException e) {
 			throw new MojoExecutionException(
 					"Unable to instantiate the goal executor.", e);
+		} catch (GoalExecutionException e) {
+			String fullQualifiedMojoGoal = getFullQualifiedMojoGoal();
+			throw new MojoExecutionException("Execution of "
+					+ fullQualifiedMojoGoal + " failed", e);
 		}
 	}
 
+	private String getFullQualifiedMojoGoal() {
+		return mojoExecution.getGroupId() + ":" + mojoExecution.getArtifactId()
+				+ ":" + mojoExecution.getVersion() + ":"
+				+ mojoExecution.getGoal();
+	}
+
+	/**
+	 * 
+	 * @return the {@link Goal} parameter object. If this
+	 *         {@link AbstractMavenContextMojo} is an instance of the execution
+	 *         parameter type than this {@link AbstractMavenContextMojo} is
+	 *         returned.
+	 * @throws IllegalStateException
+	 *             if the execution parameter object can not be resolved
+	 *             automatically. Please override and implement in this case.
+	 */
 	protected PARAMS getExecutionParams() {
 		Class<PARAMS> paramsType = getTypeArgumentClass(1);
 		if (paramsType.isInstance(this)) {
@@ -92,8 +112,14 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 		}
 	}
 
-	private T createGoalExecutor() throws InstantiationException,
-			IllegalAccessException {
+	/**
+	 * Resolves the {@link Goal} to execute in order to the type argument T.
+	 * 
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	protected T getGoal() throws InstantiationException, IllegalAccessException {
 		Class<T> goalExecutorClass = getTypeArgumentClass(0);
 		return goalExecutorClass.newInstance();
 	}
@@ -150,7 +176,7 @@ public abstract class AbstractMavenContextMojo<T extends GoalExecutor<PARAMS>, P
 
 		/**
 		 * Returns a rich domain model of a {@link Dependency}.
-		 *
+		 * 
 		 * @param dependency
 		 * @return
 		 */

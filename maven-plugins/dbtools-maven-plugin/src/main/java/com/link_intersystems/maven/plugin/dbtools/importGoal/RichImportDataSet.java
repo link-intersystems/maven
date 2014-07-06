@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -15,6 +14,7 @@ import org.dbunit.operation.CompositeOperation;
 import org.dbunit.operation.DatabaseOperation;
 
 import com.link_intersystems.maven.plugin.dbtools.DataSet.Format;
+import com.link_intersystems.maven.plugin.system.GoalParameterException;
 
 public class RichImportDataSet {
 
@@ -41,7 +41,7 @@ public class RichImportDataSet {
 		this.importDataSet = importDataSet;
 	}
 
-	public IDataSet getDataSet() throws MojoExecutionException {
+	public IDataSet getDataSet() throws GoalParameterException {
 		File file = importDataSet.getFile();
 		Format format = getFormat();
 		IDataSet dataSet = null;
@@ -61,17 +61,17 @@ public class RichImportDataSet {
 				break;
 			}
 		} catch (Exception e) {
-			throw new MojoExecutionException("Unable to create data set.", e);
+			throw new GoalParameterException("Unable to create data set.", e);
 		}
 		if (dataSet == null) {
-			throw new MojoExecutionException("Dataset support for format "
+			throw new GoalParameterException("Dataset support for format "
 					+ format + " is not implemented");
 		}
 
 		return dataSet;
 	}
 
-	public Format getFormat() throws MojoExecutionException {
+	public Format getFormat() throws GoalParameterException {
 		String formatString = importDataSet.getFormat();
 		Format format;
 		if (StringUtils.isBlank(formatString)) {
@@ -83,10 +83,10 @@ public class RichImportDataSet {
 	}
 
 	private Format detectFormatUsingFileExtension()
-			throws MojoExecutionException {
+			throws GoalParameterException {
 		File file = importDataSet.getFile();
 		if (file == null) {
-			throw new MojoExecutionException(
+			throw new GoalParameterException(
 					"Unable to detect data set format through file extension, because no file is configured. "
 							+ "Please set a dataset file through command line or maven config");
 		}
@@ -101,12 +101,12 @@ public class RichImportDataSet {
 		}
 
 		if (formatCandidates.isEmpty()) {
-			throw new MojoExecutionException(
+			throw new GoalParameterException(
 					"Unable to detect data set format for file extension '"
 							+ fileExtension + "'. Please configure a format.");
 		}
 		if (formatCandidates.size() > 1) {
-			throw new MojoExecutionException(
+			throw new GoalParameterException(
 					"Unable to detect data set format through file extension. Multiple formats match the file extension "
 							+ fileExtension
 							+ ". Matching formats are "
@@ -143,7 +143,7 @@ public class RichImportDataSet {
 		try {
 			return "DataSet[format=" + getFormat() + ", file="
 					+ importDataSet.getFile() + "]";
-		} catch (MojoExecutionException e) {
+		} catch (GoalParameterException e) {
 			return "DataSet[file=" + importDataSet.getFile() + "]";
 		}
 	}

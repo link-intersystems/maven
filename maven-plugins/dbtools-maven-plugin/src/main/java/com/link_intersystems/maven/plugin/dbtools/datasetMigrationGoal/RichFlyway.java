@@ -1,11 +1,11 @@
 package com.link_intersystems.maven.plugin.dbtools.datasetMigrationGoal;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 
 import com.googlecode.flyway.core.Flyway;
 import com.googlecode.flyway.core.api.MigrationVersion;
 import com.link_intersystems.maven.plugin.dbtools.RichDriverConfig;
+import com.link_intersystems.maven.plugin.system.GoalExecutionException;
 
 /**
  * A thin wrapper around Flyway. Provides convenience methods for the migration
@@ -19,7 +19,7 @@ public class RichFlyway {
 	private Flyway flyway;
 
 	public RichFlyway(MergeDataSet mergeDataSet, Log log,
-			RichDriverConfig richDriverConfig) throws MojoExecutionException {
+			RichDriverConfig richDriverConfig) throws GoalExecutionException {
 		log.debug("constructing richFlyway instance");
 		this.mergeDataSet = mergeDataSet;
 		this.log = log;

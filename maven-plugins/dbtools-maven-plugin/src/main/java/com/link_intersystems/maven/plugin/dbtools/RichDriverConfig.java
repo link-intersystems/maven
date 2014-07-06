@@ -14,6 +14,7 @@ import org.dbunit.database.statement.AbstractStatementFactory;
 import org.dbunit.database.statement.IStatementFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 
+import com.link_intersystems.maven.plugin.system.GoalParameterException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
 public class RichDriverConfig {
@@ -27,10 +28,10 @@ public class RichDriverConfig {
 		this.driverConfig = driverConfig;
 	}
 
-	public String getUrl() throws MojoExecutionException {
+	public String getUrl() throws GoalParameterException {
 		String url = driverConfig.getUrl();
 		if (StringUtils.isBlank(url)) {
-			throw new MojoExecutionException(
+			throw new GoalParameterException(
 					"A driver url must be configured via driverConfig/url");
 		}
 		return url.trim();
@@ -52,24 +53,24 @@ public class RichDriverConfig {
 		return driverClass.trim();
 	}
 
-	public String getUsername() throws MojoExecutionException {
+	public String getUsername() throws GoalParameterException {
 		String username = driverConfig.getUsername();
 		if (StringUtils.isBlank(username)) {
 			String serverId = driverConfig.getServerId();
 			if (StringUtils.isBlank(serverId)) {
-				throw new MojoExecutionException(
+				throw new GoalParameterException(
 						"No username nor a serverId is configured.");
 			}
 			Server serverSettings = mavenContext.getServerSettings(serverId
 					.trim());
 			if (serverSettings == null) {
-				throw new MojoExecutionException(
+				throw new GoalParameterException(
 						"Maven settings does not contain server configuration "
 								+ serverId);
 			}
 			username = serverSettings.getUsername();
 			if (StringUtils.isBlank(username)) {
-				throw new MojoExecutionException(
+				throw new GoalParameterException(
 						"Maven settings server configuration " + serverId
 								+ " does not contain a username.");
 			}
@@ -77,18 +78,18 @@ public class RichDriverConfig {
 		return username.trim();
 	}
 
-	public String getPassword() throws MojoExecutionException {
+	public String getPassword() throws GoalParameterException {
 		String password = driverConfig.getPassword();
 		if (password == null) {
 			String serverId = driverConfig.getServerId();
 			if (StringUtils.isBlank(serverId)) {
-				throw new MojoExecutionException(
+				throw new GoalParameterException(
 						"No passowrd nor a serverId is configured.");
 			}
 			Server serverSettings = mavenContext.getServerSettings(serverId
 					.trim());
 			if (serverSettings == null) {
-				throw new MojoExecutionException(
+				throw new GoalParameterException(
 						"Maven settings does not contain server configuration "
 								+ serverId);
 			}
@@ -140,7 +141,7 @@ public class RichDriverConfig {
 		return jdbcUrlAnalyser.getHostname();
 	}
 
-	public IDatabaseConnection createConnection() throws MojoExecutionException {
+	public IDatabaseConnection createConnection() throws GoalParameterException {
 		try {
 			Connection jdbcConnection = createJDBCConnection();
 			String schema = getSchema();
@@ -159,7 +160,7 @@ public class RichDriverConfig {
 					statementFactory);
 			return connection;
 		} catch (Exception e) {
-			throw new MojoExecutionException(
+			throw new GoalParameterException(
 					"Unable to create DBUnit database connection", e);
 		}
 	}

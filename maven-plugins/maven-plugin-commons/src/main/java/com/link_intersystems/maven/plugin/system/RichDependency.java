@@ -33,9 +33,10 @@ import org.eclipse.aether.version.Version;
 
 /**
  * Enriches a "normal" {@link Dependency} with more sophisticated methods than
- * just data access.
- *
- *
+ * just data access. This class puts common dependency related logic on top of a
+ * {@link Dependency}.
+ * 
+ * 
  */
 public class RichDependency {
 
@@ -57,7 +58,7 @@ public class RichDependency {
 	}
 
 	/**
-	 *
+	 * 
 	 * @return a copy of the {@link Dependency} of this {@link RichDependency}
 	 *         so that modifications on the returned {@link Dependency} does not
 	 *         affect this {@link RichDependency}.

@@ -1,6 +1,5 @@
 package com.link_intersystems.maven.plugin.dbtools.datasetMigrationGoal;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -8,6 +7,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import com.link_intersystems.maven.plugin.dbtools.AbstractDBUnitMojo;
 import com.link_intersystems.maven.plugin.dbtools.RichDriverConfig;
+import com.link_intersystems.maven.plugin.system.GoalExecutionException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
 @Mojo(name = "merge", requiresDependencyCollection = ResolutionScope.COMPILE, requiresDependencyResolution = ResolutionScope.RUNTIME)
@@ -46,12 +46,12 @@ public class MergeMojo extends AbstractDBUnitMojo<MergeExecutor, MergeParams>
 	private MergeDataSet mergeDataSet;
 
 	@Override
-	public RichMergeDataSet getRichMergeDataset() throws MojoExecutionException {
+	public RichMergeDataSet getRichMergeDataset() throws GoalExecutionException {
 		MavenContext mavenContext = getMavenContext();
 		Log log = mavenContext.getLog();
 
 		if (mergeDataSet == null) {
-			throw new MojoExecutionException(
+			throw new GoalExecutionException(
 					"You must provide a configuration for this mojo");
 		}
 		mergeDataSet.validate();
@@ -65,7 +65,7 @@ public class MergeMojo extends AbstractDBUnitMojo<MergeExecutor, MergeParams>
 	}
 
 	@Override
-	public RichFlyway getRichFlyway() throws MojoExecutionException {
+	public RichFlyway getRichFlyway() throws GoalExecutionException {
 		return new RichFlyway(mergeDataSet, getMavenContext().getLog(),
 				getRichDriverConfig());
 	}

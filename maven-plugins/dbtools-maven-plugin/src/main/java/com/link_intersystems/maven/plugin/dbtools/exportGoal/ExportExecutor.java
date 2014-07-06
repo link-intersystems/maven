@@ -10,16 +10,17 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.dbunit.dataset.IDataSet;
 
-import com.link_intersystems.maven.plugin.dbtools.RichDriverConfig;
 import com.link_intersystems.maven.plugin.dbtools.DataSet.Format;
-import com.link_intersystems.maven.plugin.system.GoalExecutor;
+import com.link_intersystems.maven.plugin.dbtools.RichDriverConfig;
+import com.link_intersystems.maven.plugin.system.Goal;
+import com.link_intersystems.maven.plugin.system.GoalExecutionException;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
-public class ExportExecutor implements GoalExecutor<ExportParams> {
+public class ExportExecutor implements Goal<ExportParams> {
 
 	@Override
 	public void execute(MavenContext mavenContext, ExportParams executionParams)
-			throws MojoExecutionException {
+			throws GoalExecutionException {
 		RichDriverConfig richDriverConfig = executionParams
 				.getRichDriverConfig();
 		RichExportDataSet richExportDataSet = executionParams
@@ -62,7 +63,7 @@ public class ExportExecutor implements GoalExecutor<ExportParams> {
 			Format format = richExportDataSet.getFormat();
 			String message = format(
 					"Error occured while creating data set of type {0}", format);
-			throw new MojoExecutionException(message, e);
+			throw new GoalExecutionException(message, e);
 		}
 	}
 }

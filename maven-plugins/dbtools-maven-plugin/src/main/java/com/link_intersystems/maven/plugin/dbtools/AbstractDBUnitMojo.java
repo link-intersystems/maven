@@ -3,10 +3,10 @@ package com.link_intersystems.maven.plugin.dbtools;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import com.link_intersystems.maven.plugin.system.AbstractMavenContextMojo;
-import com.link_intersystems.maven.plugin.system.GoalExecutor;
+import com.link_intersystems.maven.plugin.system.Goal;
 import com.link_intersystems.maven.plugin.system.MavenContext;
 
-public abstract class AbstractDBUnitMojo<T extends GoalExecutor<PARAMS>, PARAMS>
+public abstract class AbstractDBUnitMojo<T extends Goal<PARAMS>, PARAMS>
 		extends AbstractMavenContextMojo<T, PARAMS> {
 
 	/**
